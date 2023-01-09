@@ -3,6 +3,7 @@ const { get } = require('http');
 const app = express();
 
 let envelopes = [];
+
 let totalBudget = 0;
 
 
@@ -18,6 +19,15 @@ app.post('/envelops', (req, res, next) => {
         res.status(201).send(envelopes);
     }else {
         res.status(400).send;
+    }
+})
+
+app.get('/envelops/:envname',(req, res, next) => {
+    const envelopContent = envelopes[0][req.params.envname];
+    if(envelopContent){
+        res.send(`${req.params.envname}: ${envelopContent}`);
+    }else {
+        res.status(404).send('Envelop not found.');
     }
 })
 
