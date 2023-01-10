@@ -2,9 +2,15 @@ const express = require('express');
 const { get } = require('http');
 const app = express();
 
-let envelopes = [];
+let envelopes = [
+    {
+        Gas: 100,
+        Clothing:200,
+        DiningOut: 300,
+    }
+];
 
-let totalBudget = 0;
+let totalBudget = 600;
 
 
 
@@ -26,7 +32,7 @@ app.post('/envelops', (req, res, next) => {
     const recevedEnvelops = req.query;
     if(recevedEnvelops) {
         envelopes.push(recevedEnvelops);
-        res.status(201).send(envelopes);
+        res.status(201).send(envelopes[0]);
     }else {
         res.status(400).send;
     }
@@ -56,8 +62,20 @@ app.put('/envelops/cost',(req, res, next) => {
     
 })
 
+app.delete('/envelops/:envname', (req, res, next) => {
+    const toDelete = req.params.envname;
+    if(envelopes[0][toDelete]){
+        const deleteBudget = envelopes[0][toDelete];
+        totalBudget -= deleteBudget;
+        delete envelopes[0][toDelete];
+        res.send(envelopes[0]);
+    } else {
+        res.status(404).send('Envelop not found!');
+    }    
+})
+
 app.get('/envelops',(req, res, next)=> {
-    res.send(envelopes);
+    res.send(envelopes[0]);
 })
 
 app.get('/totalbudget',(req, res, next)=> {
